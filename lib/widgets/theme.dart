@@ -1,5 +1,6 @@
 import 'package:constraints_tutorial/widgets/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color black = Color(0xff333333);
@@ -9,6 +10,10 @@ class AppTheme {
   ThemeData getDefaultAppTheme() {
     final ThemeData baseTheme = ThemeData.light();
 
-    return baseTheme.copyWith();
+    return baseTheme.copyWith(
+      textTheme: baseTheme.textTheme.copyWith(
+        bodyText1: GoogleFonts.lato().copyWith(color: black),
+      ),
+    );
   }
 }

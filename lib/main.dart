@@ -2,6 +2,17 @@ import 'package:constraints_tutorial/widgets/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+TextStyle textStyle(BuildContext context,
+    {Color color = AppTheme.black,
+    double fontSize = 17.0,
+    FontWeight fontWeight = FontWeight.normal}) {
+  return Theme.of(context).textTheme.bodyText1.copyWith(
+        color: color,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+      );
+}
+
 class Item {
   Item({this.name, this.price, this.discount, this.imagePath});
 
@@ -16,6 +27,8 @@ class AppImages {
   static String dami = "$_basePath/dami.jpg";
   static String eliDafaria = "$_basePath/eli_defaria.jpg";
   static String marionelLuciano = "$_basePath/marionel_luciano.jpg";
+  static String markAdriano = "$_basePath/mark_adriano.jpg";
+  static String tamaraBellis = "$_basePath/tamara_bellis.jpg";
 }
 
 List<Item> getPlaceHolderItems() {
@@ -34,6 +47,15 @@ List<Item> getPlaceHolderItems() {
         price: 80,
         discount: 30,
         imagePath: AppImages.eliDafaria)
+  ];
+}
+
+List<Item> getRecommendedPlaceHolderItems() {
+  return <Item>[
+    Item(name: "", price: 80, discount: 0, imagePath: AppImages.markAdriano),
+    Item(name: "", price: 80, discount: 30, imagePath: AppImages.tamaraBellis),
+    Item(name: "", price: 80, discount: 0, imagePath: AppImages.markAdriano),
+    Item(name: "", price: 80, discount: 30, imagePath: AppImages.tamaraBellis)
   ];
 }
 
@@ -116,6 +138,95 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Row buildAppBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.black,
+            image: DecorationImage(
+                image: AssetImage(
+                  AppImages.marionelLuciano,
+                ),
+                fit: BoxFit.cover),
+          ),
+        ),
+        Stack(
+          fit: StackFit.loose,
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: IconButton(
+                icon: Icon(
+                  Icons.shopping_cart_rounded,
+                  size: 30,
+                  color: Colors.black,
+                ),
+                onPressed: null,
+              ),
+            ),
+            Positioned(
+              right: 10,
+              top: -3,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 7,
+                  vertical: 7,
+                ),
+                decoration: BoxDecoration(
+                  color: AppTheme.pink,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  '2',
+                  style: textStyle(context,
+                      fontSize: 13, fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  InkWell _buildTab(String text, int idx) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedTabIdx = idx;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        decoration: selectedTabIdx != idx
+            ? null
+            : BoxDecoration(
+                color: AppTheme.pink,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+              ),
+        child: Text(
+          text,
+          style: textStyle(
+            context,
+            fontSize: 14.5,
+            fontWeight:
+                selectedTabIdx != idx ? FontWeight.normal : FontWeight.bold,
+          ),
+          // style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ),
+    );
+  }
+
   Expanded _buildCatalog() {
     return Expanded(
       child: SingleChildScrollView(
@@ -160,7 +271,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           vertical: 5, horizontal: 10),
                                       child: Text(
                                         '-${item.discount}%',
-                                        style: TextStyle(color: Colors.white),
+                                        style: textStyle(context,
+                                            color: Colors.white, fontSize: 13),
                                       ),
                                       decoration: BoxDecoration(
                                         color: Colors.black,
@@ -180,8 +292,19 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('${item.name}'),
-                                Text("\$${item.price}")
+                                Text(
+                                  '${item.name}',
+                                  style: textStyle(context,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.5),
+                                ),
+                                Text(
+                                  "\$${item.price}",
+                                  style: textStyle(context,
+                                      color: AppTheme.grey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.5),
+                                )
                               ],
                             ),
                           ),
@@ -195,7 +318,14 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 17,
             ),
-            Text("Reccommended for You"),
+            Text(
+              "Recommended for You",
+              style: textStyle(
+                context,
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
+            ),
             SizedBox(
               height: 17,
             ),
@@ -236,86 +366,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  InkWell _buildTab(String text, int idx) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedTabIdx = idx;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 11, horizontal: 14),
-        decoration: selectedTabIdx != idx
-            ? null
-            : BoxDecoration(
-                color: AppTheme.pink,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
-                ),
-              ),
-        child: Text(text),
-      ),
-    );
-  }
-
   // Widget _tab(){
   //   return SingleChildScrollView(
   //     child: ,
   //   );
   // }
 
-  Row buildAppBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.black,
-            image: DecorationImage(
-              image: AssetImage(AppImages.marionelLuciano,),
-              fit: BoxFit.cover
-            ),
-          ),
-        ),
-        Stack(
-          fit: StackFit.loose,
-          alignment: Alignment.topRight,
-          children: [
-            Container(
-              margin: EdgeInsets.only(right: 10),
-              child: IconButton(
-                icon: Icon(
-                  Icons.shopping_cart_rounded,
-                  size: 30,
-                  color: Colors.black,
-                ),
-                onPressed: null,
-              ),
-            ),
-            Positioned(
-              right: 10,
-              top: -3,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 7,
-                  vertical: 7,
-                ),
-                decoration: BoxDecoration(
-                  color: AppTheme.pink,
-                  shape: BoxShape.circle,
-                ),
-                child: Text('2'),
-              ),
-            )
-          ],
-        )
-      ],
-    );
-  }
 }
 
 // The Scaffold widget gives loose constraints to its children
