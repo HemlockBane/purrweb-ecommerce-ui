@@ -3,8 +3,6 @@ import 'package:constraints_tutorial/models/item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-
 void main() {
   runApp(MyApp());
 }
@@ -53,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    _buildCatalog()
+                    _buildCatalog(),
                   ],
                 ),
               ),
@@ -176,25 +174,39 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 300,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: List.generate(
-                  4,
-                  (int idx) {
-                    final items = getPlaceHolderItems();
-                    final item = items[idx];
-                    return Container(
-                      margin: EdgeInsets.only(right: 17),
-                      height: 200,
-                      width: 190,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Stack(
-                              children: [
-                                Container(
+            _buildProducts(),
+            _buildRecommendedItems(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Column _buildProducts() {
+    return Column(
+      children: [
+        Container(
+          height: 300,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: List.generate(
+              4,
+              (int idx) {
+                final items = getPlaceHolderItems();
+                final item = items[idx];
+                return Container(
+                  margin: EdgeInsets.only(right: 17),
+                  height: 200,
+                  width: 190,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            GestureDetector(
+                              child: Hero(
+                                tag: '${item.name}_$idx',
+                                child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage(item.imagePath),
@@ -204,89 +216,111 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 ),
-                                if (item.discount != 0)
-                                  Positioned(
-                                    top: 7,
-                                    left: 10,
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 10),
-                                      child: Text(
-                                        '-${item.discount}%',
-                                        style: textStyle(context,
-                                            color: Colors.white, fontSize: 13),
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                      ),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) {
+                                    return ProductDetailScreen(
+                                      item: item,
+                                      heroTag: '${item.name}_$idx',
+                                    );
+                                  }),
+                                );
+                              },
+                            ),
+                            if (item.discount != 0)
+                              Positioned(
+                                top: 7,
+                                left: 10,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  child: Text(
+                                    '-${item.discount}%',
+                                    style: textStyle(context,
+                                        color: Colors.white, fontSize: 13),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
                                     ),
-                                  )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${item.name}',
-                                  style: textStyle(context,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.5),
+                                  ),
                                 ),
-                                Text(
-                                  "\$${item.price}",
-                                  style: textStyle(context,
-                                      color: AppTheme.grey,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14.5),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                              )
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                ),
-              ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${item.name}',
+                              style: textStyle(context,
+                                  fontWeight: FontWeight.bold, fontSize: 14.5),
+                            ),
+                            Text(
+                              "\$${item.price}",
+                              style: textStyle(context,
+                                  color: AppTheme.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.5),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-            SizedBox(
-              height: 17,
-            ),
-            Text(
-              "Recommended for You",
-              style: textStyle(
-                context,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            SizedBox(
-              height: 17,
-            ),
-            Container(
-              height: 230,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: List.generate(
-                  4,
-                  (int idx) {
-                    final items = getRecommendedPlaceHolderItems();
-                    final item = items[idx];
-                    return Container(
-                      margin: EdgeInsets.only(right: 17),
-                      height: 100,
-                      width: 155,
-                      child: Column(
-                        children: [
-                          Expanded(
+          ),
+        ),
+        SizedBox(
+          height: 17,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRecommendedItems() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Recommended for You",
+          style: textStyle(
+            context,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        SizedBox(
+          height: 17,
+        ),
+        Container(
+          height: 230,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: List.generate(
+              4,
+              (int idx) {
+                final items = getRecommendedPlaceHolderItems();
+                final item = items[idx];
+                return Container(
+                  margin: EdgeInsets.only(right: 17),
+                  height: 100,
+                  width: 155,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          child: Hero(
+                            tag: "${item.name}_$idx",
                             child: Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -298,19 +332,29 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) {
+                                return ProductDetailScreen(
+                                  item: item,
+                                  heroTag: "${item.name}_$idx",
+                                );
+                              }),
+                            );
+                          },
+                        ),
                       ),
-                    );
-                  },
-                ),
-              ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -327,3 +371,35 @@ class _MyHomePageState extends State<MyHomePage> {
 // own unique sizing algorithm
 
 // To force the child of a Scaffold to fit the screen, give it tight constraints (e.g. use SizedBox.expand())
+
+class ProductDetailScreen extends StatefulWidget {
+  final Item item;
+  final String heroTag;
+  @override
+  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+
+  ProductDetailScreen({this.item, this.heroTag});
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Hero(
+          tag: widget.heroTag,
+          child: Container(
+            // height: 100,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(widget.item.imagePath), fit: BoxFit.cover),
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
