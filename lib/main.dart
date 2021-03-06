@@ -14,7 +14,209 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Purrweb Store',
       theme: AppTheme().getDefaultAppTheme(),
-      home: MyHomePage(),
+      // home: MyHomePage(),
+      home: BottomSheetExperiment2(),
+    );
+  }
+}
+
+class BottomSheetExperiment2 extends StatefulWidget {
+  @override
+  _BottomSheetExperiment2State createState() => _BottomSheetExperiment2State();
+}
+
+class _BottomSheetExperiment2State extends State<BottomSheetExperiment2> {
+  final tabItems = ["Details", "Order", "Payment"];
+  var selectedTabIdx = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: DraggableScrollableSheet(
+          initialChildSize: 0.4,
+          minChildSize: 0.4,
+          maxChildSize: 0.68,
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+              decoration: BoxDecoration(
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(35),
+                ),
+              ),
+              child: Stack(
+                children: [
+                  ListView(
+                    controller: scrollController,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Winter Coat'),
+                                Text('\$80'),
+                                Text('Your size'),
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.amber,
+                                    ),
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.amber,
+                                    ),
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.amber,
+                                    ),
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.amber,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Container(
+                                height: 20,
+                                width: 20,
+                                color: Colors.amber,
+                              ),
+                              Container(
+                                height: 20,
+                                width: 20,
+                                color: Colors.amber,
+                              ),
+                              Container(
+                                height: 20,
+                                width: 20,
+                                color: Colors.amber,
+                              ),
+                              Container(
+                                height: 20,
+                                width: 20,
+                                color: Colors.amber,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: List.generate(
+                          3,
+                          (int idx) => PillTab(
+                            context: context,
+                            text: tabItems[idx],
+                            selectedTabIdx: selectedTabIdx,
+                            idx: idx,
+                            onTap: (int newIdx) {
+                              setState(() {
+                                selectedTabIdx = newIdx;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 14,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [Text("Composition"), Text("Country")],
+                      ),
+                      SizedBox(
+                        height: 9,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [Text("100% polyester"), Text("Poland")],
+                      ),
+                      SizedBox(
+                        height: 14,
+                      ),
+                      Text('Care'),
+                      SizedBox(
+                        height: 9,
+                      ),
+                      Text(
+                          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).")
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(),
+                        child: Text("Add to cart"),
+                        onPressed: () {},
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          }),
+    );
+  }
+}
+
+class BottomSheetExperiment extends StatefulWidget {
+  @override
+  _BottomSheetExperimentState createState() => _BottomSheetExperimentState();
+}
+
+class _BottomSheetExperimentState extends State<BottomSheetExperiment> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+          body: Center(
+        child: ElevatedButton(
+          child: const Text('showModalBottomSheet'),
+          onPressed: () {
+            showModalBottomSheet<void>(
+              context: context,
+              // isScrollControlled: true,
+              // isDismissible: false,
+              // enableDrag: true,
+              builder: (BuildContext context) {
+                return Container(
+                  height: 200,
+                  color: Colors.amber,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const Text('Modal BottomSheet'),
+                        ElevatedButton(
+                          child: const Text('Close BottomSheet'),
+                          onPressed: () => Navigator.pop(context),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      )),
     );
   }
 }
@@ -46,7 +248,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(
-                          4, (int idx) => _buildTab(tabItems[idx], idx)),
+                        4,
+                        (int idx) => PillTab(
+                            context: context,
+                            text: tabItems[idx],
+                            selectedTabIdx: selectedTabIdx,
+                            idx: idx,
+                            onTap: (int newIdx) {
+                              setState(() {
+                                selectedTabIdx = newIdx;
+                              });
+                            }),
+                      ),
                     ),
                     SizedBox(
                       height: 20,
@@ -134,37 +347,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         )
       ],
-    );
-  }
-
-  InkWell _buildTab(String text, int idx) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedTabIdx = idx;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: selectedTabIdx != idx
-            ? null
-            : BoxDecoration(
-                color: AppTheme.pink,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
-                ),
-              ),
-        child: Text(
-          text,
-          style: textStyle(
-            context,
-            fontSize: 14.5,
-            fontWeight:
-                selectedTabIdx != idx ? FontWeight.normal : FontWeight.bold,
-          ),
-          // style: Theme.of(context).textTheme.bodyText1,
-        ),
-      ),
     );
   }
 
@@ -366,8 +548,56 @@ class _MyHomePageState extends State<MyHomePage> {
 
 }
 
+class PillTab extends StatelessWidget {
+  const PillTab({
+    Key key,
+    @required this.context,
+    @required this.text,
+    @required this.selectedTabIdx,
+    @required this.idx,
+    @required this.onTap,
+  }) : super(key: key);
+
+  final BuildContext context;
+  final String text;
+  final int selectedTabIdx;
+  final int idx;
+  final Function(int p1) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onTap(idx);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        decoration: selectedTabIdx != idx
+            ? null
+            : BoxDecoration(
+                color: AppTheme.pink,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18),
+                ),
+              ),
+        child: Text(
+          text,
+          style: textStyle(
+            context,
+            fontSize: 14.5,
+            fontWeight:
+                selectedTabIdx != idx ? FontWeight.normal : FontWeight.bold,
+          ),
+          // style: Theme.of(context).textTheme.bodyText1,
+        ),
+      ),
+    );
+  }
+}
+
 // The Scaffold widget gives loose constraints to its children
 // Given these constraints, each child will size itself based on its
+
 // own unique sizing algorithm
 
 // To force the child of a Scaffold to fit the screen, give it tight constraints (e.g. use SizedBox.expand())
