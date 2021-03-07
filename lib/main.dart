@@ -27,147 +27,252 @@ class BottomSheetExperiment2 extends StatefulWidget {
 
 class _BottomSheetExperiment2State extends State<BottomSheetExperiment2> {
   final tabItems = ["Details", "Order", "Payment"];
+  final sizes = ["S", "M", "L", "XL"];
+  final colors = [Colors.black, Colors.red, Colors.blue, Colors.grey];
+  final loremIpsum =
+      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+
   var selectedTabIdx = 0;
+  var selectedSizeIdx = 0;
+  var selectedColorIdx = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DraggableScrollableSheet(
-          initialChildSize: 0.4,
-          minChildSize: 0.4,
+          initialChildSize: 0.35,
+          minChildSize: 0.35,
           maxChildSize: 0.68,
           builder: (BuildContext context, ScrollController scrollController) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(35),
-                ),
-              ),
-              child: Stack(
-                children: [
-                  ListView(
-                    controller: scrollController,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Winter Coat'),
-                                Text('\$80'),
-                                Text('Your size'),
-                                Row(
-                                  children: [
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      color: Colors.amber,
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      color: Colors.amber,
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      color: Colors.amber,
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      color: Colors.amber,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                color: Colors.amber,
-                              ),
-                              Container(
-                                height: 20,
-                                width: 20,
-                                color: Colors.amber,
-                              ),
-                              Container(
-                                height: 20,
-                                width: 20,
-                                color: Colors.amber,
-                              ),
-                              Container(
-                                height: 20,
-                                width: 20,
-                                color: Colors.amber,
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: List.generate(
-                          3,
-                          (int idx) => PillTab(
-                            context: context,
-                            text: tabItems[idx],
-                            selectedTabIdx: selectedTabIdx,
-                            idx: idx,
-                            onTap: (int newIdx) {
-                              setState(() {
-                                selectedTabIdx = newIdx;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text("Composition"), Text("Country")],
-                      ),
-                      SizedBox(
-                        height: 9,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text("100% polyester"), Text("Poland")],
-                      ),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      Text('Care'),
-                      SizedBox(
-                        height: 9,
-                      ),
-                      Text(
-                          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).")
-                    ],
+            return Card(
+              margin: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(35))),
+              elevation: 5,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(35),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ButtonStyle(),
-                        child: Text("Add to cart"),
-                        onPressed: () {},
-                      ),
+                ),
+                child: Stack(
+                  children: [
+                    ListView(
+                      controller: scrollController,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Winter Coat',
+                                    style: textStyle(context,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(
+                                    '\$80',
+                                    style: textStyle(context,
+                                        color: Colors.grey, fontSize: 19),
+                                  ),
+                                  SizedBox(
+                                    height: 11,
+                                  ),
+                                  Text(
+                                    'Your size',
+                                    style: textStyle(context,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 11,
+                                  ),
+                                  Row(
+                                    children: [
+                                      for (var idx = 0;
+                                          idx < sizes.length;
+                                          idx++) ...[
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedSizeIdx = idx;
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: idx == selectedSizeIdx
+                                                  ? AppTheme.pink
+                                                  : Colors.white,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey,
+                                                    offset: Offset(1.0, 3.0),
+                                                    blurRadius: 5.0,
+                                                    spreadRadius: 1.0)
+                                              ],
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 5),
+                                            child: Text(sizes[idx]),
+                                          ),
+                                        ),
+                                        if (idx != sizes.length - 1)
+                                          SizedBox(
+                                            width: 10,
+                                          )
+                                      ]
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                for (var color in colors) ...[
+                                  Container(
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      color: color,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                  ),
+                                  if (color != colors[colors.length - 1])
+                                    SizedBox(
+                                      height: 10,
+                                    )
+                                ]
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 45,
+                        ),
+                        Row(
+                          children: [
+                            for (var idx = 0; idx < tabItems.length; idx++) ...[
+                              Container(
+                                child: Expanded(
+                                  child: PillTab(
+                                    context: context,
+                                    text: tabItems[idx],
+                                    selectedTabIdx: selectedTabIdx,
+                                    idx: idx,
+                                    unselectedColor:
+                                        Colors.grey.withOpacity(0.2),
+                                    onTap: (int newIdx) {
+                                      setState(() {
+                                        selectedTabIdx = newIdx;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              if (idx != tabItems.length - 1)
+                                SizedBox(
+                                  width: 12,
+                                )
+                            ]
+                          ],
+                        ),
+                        SizedBox(
+                          height: 14,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Composition",
+                              style: textStyle(context,
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                            Text(
+                              "Country",
+                              style: textStyle(context,
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "100% polyester",
+                              style: textStyle(context,
+                                  fontSize: 15, color: AppTheme.grey),
+                            ),
+                            Text(
+                              "Poland",
+                              style: textStyle(context,
+                                  fontSize: 15, color: AppTheme.grey),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 14,
+                        ),
+                        Text(
+                          'Care',
+                          style: textStyle(context,
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 9,
+                        ),
+                        Text(
+                          loremIpsum,
+                          style: textStyle(context,
+                              color: AppTheme.grey, fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 100,
+                        )
+                      ],
                     ),
-                  )
-                ],
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            child: Text(
+                              "Add to cart",
+                              style: textStyle(context,
+                                  fontSize: 17, color: Colors.white),
+                            ),
+                            onPressed: () {},
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(
+                                  EdgeInsets.symmetric(vertical: 19)),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(30.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )),
+                    )
+                  ],
+                ),
               ),
             );
           }),
@@ -549,19 +654,21 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class PillTab extends StatelessWidget {
-  const PillTab({
-    Key key,
-    @required this.context,
-    @required this.text,
-    @required this.selectedTabIdx,
-    @required this.idx,
-    @required this.onTap,
-  }) : super(key: key);
+  const PillTab(
+      {Key key,
+      @required this.context,
+      @required this.text,
+      @required this.selectedTabIdx,
+      @required this.idx,
+      @required this.onTap,
+      this.unselectedColor = Colors.transparent})
+      : super(key: key);
 
   final BuildContext context;
   final String text;
   final int selectedTabIdx;
   final int idx;
+  final Color unselectedColor;
   final Function(int p1) onTap;
 
   @override
@@ -572,16 +679,15 @@ class PillTab extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: selectedTabIdx != idx
-            ? null
-            : BoxDecoration(
-                color: AppTheme.pink,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
-                ),
-              ),
+        decoration: BoxDecoration(
+          color: selectedTabIdx == idx ? AppTheme.pink : unselectedColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(18),
+          ),
+        ),
         child: Text(
           text,
+          textAlign: TextAlign.center,
           style: textStyle(
             context,
             fontSize: 14.5,
