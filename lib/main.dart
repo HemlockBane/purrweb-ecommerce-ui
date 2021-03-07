@@ -687,29 +687,84 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Center(
-              child: Hero(
-                tag: widget.heroTag,
-                child: Container(
-                  // height: 100,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(widget.item.imagePath),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Center(
+            child: Hero(
+              tag: widget.heroTag,
+              child: Container(
+                // height: 100,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(widget.item.imagePath),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(18),
                   ),
                 ),
               ),
             ),
-            DetailsBottomSheet()
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Stack(
+                      fit: StackFit.loose,
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: IconButton(
+                            icon: Icon(
+                              CupertinoIcons.cart_fill,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                        Positioned(
+                          right: 10,
+                          top: -3,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 7,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppTheme.pink,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              '2',
+                              style: textStyle(context,
+                                  fontSize: 13, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          DetailsBottomSheet()
+        ],
       ),
     );
   }
