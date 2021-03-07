@@ -138,18 +138,37 @@ class _BottomSheetExperiment2State extends State<BottomSheetExperiment2> {
                             ),
                             Column(
                               children: [
-                                for (var color in colors) ...[
-                                  Container(
-                                    height: 25,
-                                    width: 25,
-                                    decoration: BoxDecoration(
-                                      color: color,
-                                      shape: BoxShape.circle,
+                                for (var idx = 0;
+                                    idx < colors.length;
+                                    idx++) ...[
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedColorIdx = idx;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 27,
+                                      width: 27,
+                                      padding: EdgeInsets.all(2.0),
+                                      decoration: idx == selectedColorIdx
+                                          ? BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  width: 2, color: colors[idx]),
+                                            )
+                                          : null,
+                                      child: Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: colors[idx],
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
                                     ),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
                                   ),
-                                  if (color != colors[colors.length - 1])
+                                  if (idx != colors.length - 1)
                                     SizedBox(
                                       height: 10,
                                     )
