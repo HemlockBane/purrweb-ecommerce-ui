@@ -13,12 +13,12 @@ TextStyle textStyle(BuildContext context,
 }
 
 class Item {
-  Item({this.name, this.price, this.discount, this.imagePath});
+  Item({this.name, this.price, this.discount, this.imagePaths});
 
   String name = "";
   int price = 0;
   int discount = 0;
-  String imagePath = "";
+  List<String> imagePaths = [];
 }
 
 class AppImages {
@@ -33,27 +33,49 @@ class AppImages {
 List<Item> getPlaceHolderItems() {
   return <Item>[
     Item(
-        name: "Winter Coat", price: 80, discount: 0, imagePath: AppImages.dami),
-    Item(
-        name: "Woolen Coat",
+        name: "Winter Coat",
         price: 80,
-        discount: 30,
-        imagePath: AppImages.eliDafaria),
+        discount: 0,
+        imagePaths: [AppImages.dami, AppImages.dami, AppImages.dami]),
+    Item(name: "Woolen Coat", price: 80, discount: 30, imagePaths: [
+      AppImages.eliDafaria,
+      AppImages.eliDafaria,
+      AppImages.eliDafaria
+    ]),
     Item(
-        name: "Winter Coat", price: 80, discount: 0, imagePath: AppImages.dami),
-    Item(
-        name: "Woolen Coat",
+        name: "Winter Coat",
         price: 80,
-        discount: 30,
-        imagePath: AppImages.eliDafaria)
+        discount: 0,
+        imagePaths: [AppImages.dami, AppImages.dami, AppImages.dami]),
+    Item(name: "Woolen Coat", price: 80, discount: 30, imagePaths: [
+      AppImages.eliDafaria,
+      AppImages.eliDafaria,
+      AppImages.eliDafaria
+    ])
   ];
 }
 
 List<Item> getRecommendedPlaceHolderItems() {
   return <Item>[
-    Item(name: "", price: 80, discount: 0, imagePath: AppImages.markAdriano),
-    Item(name: "", price: 80, discount: 30, imagePath: AppImages.tamaraBellis),
-    Item(name: "", price: 80, discount: 0, imagePath: AppImages.markAdriano),
-    Item(name: "", price: 80, discount: 30, imagePath: AppImages.tamaraBellis)
+    Item(name: "", price: 80, discount: 0, imagePaths: [
+      AppImages.markAdriano,
+      AppImages.markAdriano,
+      AppImages.markAdriano
+    ]),
+    Item(name: "", price: 80, discount: 30, imagePaths: [
+      AppImages.tamaraBellis,
+      AppImages.tamaraBellis,
+      AppImages.tamaraBellis
+    ]),
+    Item(name: "", price: 80, discount: 0, imagePaths: [
+      AppImages.markAdriano,
+      AppImages.markAdriano,
+      AppImages.markAdriano
+    ]),
+    Item(name: "", price: 80, discount: 30, imagePaths: [
+      AppImages.tamaraBellis,
+      AppImages.tamaraBellis,
+      AppImages.tamaraBellis
+    ])
   ];
 }
