@@ -5,8 +5,6 @@ import 'package:constraints_tutorial/widgets/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -177,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage(item.imagePath),
+                                        image: AssetImage(item.imagePaths[0]),
                                         fit: BoxFit.cover),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(18),
@@ -292,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(item.imagePath),
+                                    image: AssetImage(item.imagePaths[0]),
                                     fit: BoxFit.cover),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(18),
@@ -325,10 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-
 }
-
-
 
 // The Scaffold widget gives loose constraints to its children
 // Given these constraints, each child will size itself based on its

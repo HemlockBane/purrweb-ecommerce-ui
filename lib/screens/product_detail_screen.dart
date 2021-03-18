@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:constraints_tutorial/models/item.dart';
 import 'package:constraints_tutorial/widgets/pill_tab.dart';
 import 'package:constraints_tutorial/widgets/theme.dart';
@@ -14,85 +15,103 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  int _selectedIdx = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Center(
-            child: Hero(
+          Hero(
               tag: widget.heroTag,
-              child: Container(
-                // height: 100,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(widget.item.imagePath),
-                      fit: BoxFit.cover),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(18),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Stack(
-                      fit: StackFit.loose,
-                      alignment: Alignment.topRight,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          child: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.cart_fill,
-                              size: 30,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {},
-                          ),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height,
+                    enlargeCenterPage: false,
+                    viewportFraction: 1.0,
+                    onPageChanged: (idx, reason) {
+                      setState(() {
+                        _selectedIdx = idx;
+                      });
+                    }),
+                items: [
+                  for (var idx = 0; idx < widget.item.imagePaths.length; idx++)
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(widget.item.imagePaths[idx]),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
                         ),
-                        Positioned(
-                          right: 10,
-                          top: -3,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 7,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppTheme.pink,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              '2',
-                              style: textStyle(context,
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
+                      ),
+                    ),
+                ],
+              )),
+          buildAppBarItems(context),
+          DetailsBottomSheet(
+            imageUrls: widget.item.imagePaths,
+            selectedIdx: _selectedIdx,
+          )
+        ],
+      ),
+    );
+  }
+
+  Align buildAppBarItems(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 40,
           ),
-          DetailsBottomSheet()
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Stack(
+                fit: StackFit.loose,
+                alignment: Alignment.topRight,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: IconButton(
+                      icon: Icon(
+                        CupertinoIcons.cart_fill,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: -3,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 7,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.pink,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '2',
+                        style: textStyle(context,
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          )
         ],
       ),
     );
@@ -100,6 +119,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 class DetailsBottomSheet extends StatefulWidget {
+  final List<String> imageUrls;
+  final int selectedIdx;
+
+  DetailsBottomSheet({this.imageUrls, this.selectedIdx});
+
   @override
   _DetailsBottomSheetState createState() => _DetailsBottomSheetState();
 }
@@ -143,14 +167,32 @@ class _DetailsBottomSheetState extends State<DetailsBottomSheet> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withOpacity(0.6),
               ),
               child: IconButton(
-                icon: Icon(Icons.favorite_border_outlined),
+                icon: Icon(Icons.favorite_border_outlined, color: Colors.black.withOpacity(0.7),),
                 onPressed: () {},
               ),
             ),
           ),
+        ),
+        Positioned(
+          bottom: fabYPosition + 20,
+          right: MediaQuery.of(context).size.width / 2,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            for (var idx = 0; idx < widget.imageUrls.length; idx++)
+              Container(
+                width: 8.0,
+                height: 8.0,
+                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: widget.selectedIdx == idx
+                      ? Colors.white
+                      : Colors.white.withOpacity(0.3),
+                ),
+              )
+          ]),
         ),
         NotificationListener<DraggableScrollableNotification>(
           onNotification: (DraggableScrollableNotification notification) {
